@@ -103,7 +103,7 @@
 
       // Fazer pedido ao backend
       try {
-        const response = await fetch("http://localhost:5005/register_bet", {
+        const response = await fetch("http://127.0.0.1:5005/register_bet", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ key, credit_account_id: creditAccountId }),

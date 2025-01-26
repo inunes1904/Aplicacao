@@ -1,2 +1,4 @@
 grpcio==1.57.0
-grpcio-tools==1.57.0
+grpcio-tools==1.57.
+Flask-Cors==5.0.0
+Flask==3.0.2

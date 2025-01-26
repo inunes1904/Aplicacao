@@ -1,10 +1,13 @@
 from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS
 import requests
 import grpc
 import euromil_pb2
 import euromil_pb2_grpc
 
 app = Flask(__name__)
+
+CORS(app)
 
 # Configurações para os serviços externos
 CREDIBANK_URL = "http://localhost:8080"
@@ -35,6 +38,9 @@ def register_bet():
     # Obtém os dados enviados pelo utilizador
     data = request.json
     key = data.get("key")
+
+    print(data)
+
     credit_account_id = data.get("credit_account_id")
 
     # Valida os dados
