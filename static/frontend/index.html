@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplicação - Apostas Online</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+    h1 {
+      font-size: 1.5em;
+      color: #333;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: #555;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .message {
+      margin-top: 15px;
+      font-size: 0.9em;
+      text-align: center;
+    }
+    .success {
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Aposta Euromilhões</h1>
+    <form id="betForm">
+      <label for="key">Chave de Aposta:</label>
+      <input type="text" id="key" placeholder="Ex: 12345" required />
+
+      <label for="creditAccountId">ID da Conta de Crédito:</label>
+      <input type="text" id="creditAccountId" placeholder="16 dígitos" required />
+
+      <button type="submit">Submeter Aposta</button>
+    </form>
+    <div id="message" class="message"></div>
+  </div>
+
+  <script>
+    document.getElementById("betForm").addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const key = document.getElementById("key").value;
+      const creditAccountId = document.getElementById("creditAccountId").value;
+      const messageDiv = document.getElementById("message");
+
+      // Limpar mensagens anteriores
+      messageDiv.textContent = "";
+      messageDiv.className = "message";
+
+      // Validar inputs localmente
+      if (creditAccountId.length !== 16 || isNaN(creditAccountId)) {
+        messageDiv.textContent = "O ID da conta de crédito deve ter 16 dígitos.";
+        messageDiv.classList.add("error");
+        return;
+      }
+
+      // Fazer pedido ao backend
+      try {
+        const response = await fetch("http://localhost:5005/register_bet", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ key, credit_account_id: creditAccountId }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          messageDiv.textContent = result.message;
+          messageDiv.classList.add("success");
+        } else {
+          messageDiv.textContent = result.error || "Ocorreu um erro ao registar a aposta.";
+          messageDiv.classList.add("error");
+        }
+      } catch (error) {
+        messageDiv.textContent = "Erro ao comunicar com o servidor. Tente novamente.";
+        messageDiv.classList.add("error");
+      }
+    });
+  </script>
+</body>
+</html>

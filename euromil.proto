@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package euromil;
+
+// The Euromil service definition.
+service Euromil {
+  // Registers an Euromil bet.
+  rpc RegisterEuroMil (RegisterRequest) returns (RegisterReply);
+}
+
+// Request message containing the Euromil key and digital check ID.
+message RegisterRequest {
+  string key = 1;
+  string checkid = 2;
+}
+
+// Response message containing success or failure of the registration.
+message RegisterReply {
+  string message = 1;
+}
